@@ -1,0 +1,7 @@
+{
+    "name": "portfolio",
+    "dependencies": {
+        "bootstrap": "~3.3.6",
+        "react": "~15.1.0"
+    }
+}

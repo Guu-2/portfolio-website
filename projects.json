@@ -1,0 +1,14 @@
+[
+    {
+        "title": "Text Classification App",
+        "description": "Ứng dụng phân loại văn bản sử dụng học máy, triển khai qua Flask.",
+        "github": "https://github.com/yourusername/text-classification",
+        "demo": "https://your-demo-link.herokuapp.com"
+    },
+    {
+        "title": "Speech Recognition Demo",
+        "description": "Hệ thống nhận diện giọng nói cơ bản với mô hình học sâu.",
+        "github": "https://github.com/yourusername/speech-recognition",
+        "demo": ""
+    }
+]
