@@ -83,3 +83,58 @@ with app.test_client() as client:
     
     print('🎉 All routes are working!')
 "
+    
+    - name: Test Chatbot API
+      run: |
+        python -c "
+from app import app
+import json
+
+# Test chatbot endpoints
+with app.test_client() as client:
+    # Test chatbot greeting
+    response = client.post('/api/chat', json={'message': 'Hello'})
+    assert response.status_code == 200
+    data = response.get_json()
+    assert 'response' in data
+    assert 'text' in data['response']
+    print('✅ Chatbot greeting works')
+    
+    # Test projects query
+    response = client.post('/api/chat', json={'message': 'Tell me about your projects'})
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data['intent'] == 'projects'
+    print('✅ Projects query works')
+    
+    # Test skills query
+    response = client.post('/api/chat', json={'message': 'What skills do you have?'})
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data['intent'] == 'skills'
+    print('✅ Skills query works')
+    
+    # Test timeline query
+    response = client.post('/api/chat', json={'message': 'Show me your timeline'})
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data['intent'] == 'timeline'
+    print('✅ Timeline query works')
+    
+    # Test contact query
+    response = client.post('/api/chat', json={'message': 'How can I contact you?'})
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data['intent'] == 'contact'
+    print('✅ Contact query works')
+    
+    # Test suggestions endpoint
+    response = client.get('/api/chat/suggestions')
+    assert response.status_code == 200
+    data = response.get_json()
+    assert 'suggestions' in data
+    assert len(data['suggestions']) > 0
+    print('✅ Suggestions endpoint works')
+    
+    print('🎉 All chatbot tests passed!')
+"

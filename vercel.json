@@ -11,5 +11,13 @@
       "src": "/(.*)",
       "dest": "app.py"
     }
-  ]
+  ],
+  "env": {
+    "CHATBOT_MODE": "hybrid",
+    "CHATBOT_FALLBACK_ENABLED": "true",
+    "OPENAI_MODEL": "gpt-3.5-turbo",
+    "OPENAI_MAX_TOKENS": "500",
+    "OPENAI_TEMPERATURE": "0.7",
+    "CHATBOT_MAX_CONTEXT_LENGTH": "2000"
+  }
 }

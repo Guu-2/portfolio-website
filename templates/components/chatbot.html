@@ -1,0 +1,27 @@
+<!-- Chatbot Component -->
+<!-- This component is automatically loaded via JavaScript -->
+<!-- The chatbot will appear as a floating button on all pages -->
+
+<script>
+// Chatbot configuration
+window.chatbotConfig = {
+    enabled: true,
+    position: 'bottom-right',
+    theme: 'default',
+    welcomeMessage: "Hello! I'm Guu's portfolio assistant. I can help you learn about his projects, skills, and experience. What would you like to know?",
+    placeholderText: "Ask me about Guu's portfolio...",
+    maxMessageLength: 500,
+    typingDelay: 1000,
+    suggestions: [
+        'Tell me about projects',
+        'What skills do you have?',
+        'Show me your timeline',
+        'How can I contact you?',
+        'What technologies do you use?',
+        'Tell me about your experience'
+    ]
+};
+</script>
+
+<!-- Chatbot will be injected here by JavaScript -->
+<div id="chatbot-root"></div>
