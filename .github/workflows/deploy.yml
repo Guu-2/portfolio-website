@@ -1,0 +1,85 @@
+name: Deploy Portfolio Website
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Validate JSON data
+      run: |
+        python -c "
+import json
+import sys
+from app import validate_projects_data, validate_skills_data, validate_timeline_data
+
+try:
+    # Validate projects.json
+    with open('static/data/projects.json', 'r') as f:
+        projects = json.load(f)
+    validate_projects_data(projects)
+    print('✅ projects.json is valid')
+    
+    # Validate skills.json
+    with open('static/data/skills.json', 'r') as f:
+        skills_data = json.load(f)
+    validate_skills_data(skills_data)
+    print('✅ skills.json is valid')
+    
+    # Validate timeline.json
+    with open('static/data/timeline.json', 'r') as f:
+        timeline_data = json.load(f)
+    validate_timeline_data(timeline_data)
+    print('✅ timeline.json is valid')
+    
+    print('🎉 All JSON data files are valid!')
+    
+except Exception as e:
+    print(f'❌ Validation error: {e}')
+    sys.exit(1)
+"
+    
+    - name: Test Flask app
+      run: |
+        python -c "
+from app import app
+import json
+
+# Test that the app can start
+with app.test_client() as client:
+    # Test main routes
+    response = client.get('/')
+    assert response.status_code == 200
+    print('✅ Home page loads successfully')
+    
+    response = client.get('/projects')
+    assert response.status_code == 200
+    print('✅ Projects page loads successfully')
+    
+    response = client.get('/skills')
+    assert response.status_code == 200
+    print('✅ Skills page loads successfully')
+    
+    response = client.get('/timeline')
+    assert response.status_code == 200
+    print('✅ Timeline page loads successfully')
+    
+    print('🎉 All routes are working!')
+"
