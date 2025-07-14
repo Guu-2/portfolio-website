@@ -7,20 +7,14 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.18
-      - key: CHATBOT_MODE
-        value: hybrid
-      - key: CHATBOT_FALLBACK_ENABLED
-        value: true
-      - key: OPENAI_MODEL
-        value: gpt-3.5-turbo
-      - key: OPENAI_MAX_TOKENS
+      - key: GEMINI_MODEL
+        value: gemini-pro
+      - key: GEMINI_MAX_TOKENS
         value: 500
-      - key: OPENAI_TEMPERATURE
+      - key: GEMINI_TEMPERATURE
         value: 0.7
       - key: CHATBOT_MAX_CONTEXT_LENGTH
         value: 2000
-      # Add your API keys in Render dashboard:
-      # - key: OPENAI_API_KEY
-      #   value: your_openai_api_key
-      # - key: ANTHROPIC_API_KEY
-      #   value: your_anthropic_api_key
+      # Add your Gemini API key in Render dashboard:
+      # - key: GEMINI_API_KEY
+      #   value: your_gemini_api_key

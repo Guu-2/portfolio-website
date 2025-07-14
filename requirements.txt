@@ -9,10 +9,6 @@ MarkupSafe==3.0.2
 packaging==24.2
 Werkzeug==3.1.3
 
-# LLM Integration
-openai==1.3.0
-anthropic==0.8.0
+# Gemini AI Integration
 google-generativeai==0.3.0
 python-dotenv==1.0.0
-requests==2.31.0
-tiktoken==0.5.0

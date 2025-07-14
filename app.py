@@ -8,10 +8,7 @@ import hashlib
 from datetime import datetime
 from functools import wraps
 from dotenv import load_dotenv
-import openai
-import anthropic
 import google.generativeai as genai
-import tiktoken
 
 # Load environment variables
 load_dotenv()
@@ -426,176 +423,84 @@ def admin_timeline():
         except Exception as e:
             return jsonify({"status": "error", "message": f"Error updating timeline: {str(e)}"}), 500
 
-# ========== LLM INTEGRATION ==========
-class LLMProvider:
-    """Base class for LLM providers"""
+# ========== GEMINI AI INTEGRATION ==========
+class GeminiProvider:
+    """Google Gemini AI integration"""
     
     def __init__(self):
-        self.max_tokens = int(os.getenv('OPENAI_MAX_TOKENS', 500))
-        self.temperature = float(os.getenv('OPENAI_TEMPERATURE', 0.7))
+        self.client = None
+        self.model = os.getenv('GEMINI_MODEL', 'gemini-pro')
+        self.max_tokens = int(os.getenv('GEMINI_MAX_TOKENS', 500))
+        self.temperature = float(os.getenv('GEMINI_TEMPERATURE', 0.7))
         self.max_context_length = int(os.getenv('CHATBOT_MAX_CONTEXT_LENGTH', 2000))
+        
+        # Initialize Gemini API
+        api_key = os.getenv('GEMINI_API_KEY')
+        if api_key:
+            try:
+                genai.configure(api_key=api_key)
+                self.client = genai.GenerativeModel(self.model)
+                logging.info("Gemini API initialized successfully")
+            except Exception as e:
+                logging.error(f"Failed to initialize Gemini API: {str(e)}")
+                self.client = None
     
-    def count_tokens(self, text, model="gpt-3.5-turbo"):
-        """Count tokens in text"""
-        try:
-            encoding = tiktoken.encoding_for_model(model)
-            return len(encoding.encode(text))
-        except:
-            # Fallback: approximate token count
-            return len(text.split()) * 1.3
+    def is_available(self):
+        return self.client is not None
     
-    def truncate_context(self, context, max_tokens=1500):
-        """Truncate context to fit within token limits"""
-        if self.count_tokens(context) <= max_tokens:
+    def truncate_context(self, context, max_length=1500):
+        """Simple context truncation"""
+        if len(context) <= max_length:
             return context
         
         # Split by sections and keep most relevant
         sections = context.split('\n\n')
         result = ""
         for section in sections:
-            if self.count_tokens(result + section) <= max_tokens:
+            if len(result + section) <= max_length:
                 result += section + "\n\n"
             else:
                 break
         return result.strip()
-
-class OpenAIProvider(LLMProvider):
-    """OpenAI GPT integration"""
     
-    def __init__(self):
-        super().__init__()
-        self.client = None
-        self.model = os.getenv('OPENAI_MODEL', 'gpt-3.5-turbo')
+    def build_portfolio_context(self):
+        """Build context from portfolio data"""
+        context = "# Guu's Portfolio Information\n\n"
         
-        api_key = os.getenv('OPENAI_API_KEY')
-        if api_key:
-            self.client = openai.OpenAI(api_key=api_key)
-    
-    def is_available(self):
-        return self.client is not None
-    
-    def generate_response(self, prompt, context=""):
-        """Generate response using OpenAI GPT"""
-        if not self.is_available():
-            raise Exception("OpenAI API key not configured")
+        # Add projects
+        if projects:
+            context += "## Projects\n"
+            for project in projects[:3]:  # Limit to 3 projects
+                context += f"### {project['title']}\n"
+                context += f"Description: {project['description']}\n"
+                context += f"Technologies: {', '.join(project['technologies'])}\n\n"
         
-        # Truncate context if too long
-        context = self.truncate_context(context)
+        # Add skills
+        if skills:
+            context += "## Skills\n"
+            for category in skills[:2]:  # Limit to 2 categories
+                context += f"### {category['category']}\n"
+                for skill in category['items'][:3]:  # Limit to 3 skills per category
+                    context += f"- {skill['name']}: {skill['proficiency']}/5\n"
+                context += "\n"
         
-        messages = [
-            {
-                "role": "system",
-                "content": f"""You are Guu's portfolio assistant. You help visitors learn about Guu's projects, skills, and experience.
-
-IMPORTANT GUIDELINES:
-- Always answer in a friendly, professional tone
-- Base your responses on the provided context data
-- If asked about something not in the context, politely redirect to available topics
-- Keep responses concise but informative
-- Use markdown formatting for better readability
-- Always refer to the person as "Guu" in third person
-
-AVAILABLE CONTEXT DATA:
-{context}
-
-Remember: You can only discuss information provided in the context above."""
-            },
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
+        # Add timeline
+        if timeline_data:
+            context += "## Recent Experience\n"
+            for event in sorted(timeline_data, key=lambda x: x['year'], reverse=True)[:2]:
+                context += f"### {event['year']} - {event['title']}\n"
+                context += f"{event['description']}\n\n"
         
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                max_tokens=self.max_tokens,
-                temperature=self.temperature
-            )
-            
-            return response.choices[0].message.content.strip()
-        except Exception as e:
-            logging.error(f"OpenAI API error: {str(e)}")
-            raise Exception(f"OpenAI API error: {str(e)}")
-
-class AnthropicProvider(LLMProvider):
-    """Anthropic Claude integration"""
-    
-    def __init__(self):
-        super().__init__()
-        self.client = None
-        self.model = os.getenv('ANTHROPIC_MODEL', 'claude-3-sonnet-20240229')
-        
-        api_key = os.getenv('ANTHROPIC_API_KEY')
-        if api_key:
-            self.client = anthropic.Anthropic(api_key=api_key)
-    
-    def is_available(self):
-        return self.client is not None
-    
-    def generate_response(self, prompt, context=""):
-        """Generate response using Anthropic Claude"""
-        if not self.is_available():
-            raise Exception("Anthropic API key not configured")
-        
-        # Truncate context if too long
-        context = self.truncate_context(context)
-        
-        system_prompt = f"""You are Guu's portfolio assistant. You help visitors learn about Guu's projects, skills, and experience.
-
-IMPORTANT GUIDELINES:
-- Always answer in a friendly, professional tone
-- Base your responses on the provided context data
-- If asked about something not in the context, politely redirect to available topics
-- Keep responses concise but informative
-- Use markdown formatting for better readability
-- Always refer to the person as "Guu" in third person
-
-AVAILABLE CONTEXT DATA:
-{context}
-
-Remember: You can only discuss information provided in the context above."""
-        
-        try:
-            response = self.client.messages.create(
-                model=self.model,
-                max_tokens=self.max_tokens,
-                temperature=self.temperature,
-                system=system_prompt,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt
-                    }
-                ]
-            )
-            
-            return response.content[0].text.strip()
-        except Exception as e:
-            logging.error(f"Anthropic API error: {str(e)}")
-            raise Exception(f"Anthropic API error: {str(e)}")
-
-class GeminiProvider(LLMProvider):
-    """Google Gemini integration"""
-    
-    def __init__(self):
-        super().__init__()
-        self.client = None
-        self.model = os.getenv('GEMINI_MODEL', 'gemini-pro')
-        
-        api_key = os.getenv('GEMINI_API_KEY')
-        if api_key:
-            genai.configure(api_key=api_key)
-            self.client = genai.GenerativeModel(self.model)
-    
-    def is_available(self):
-        return self.client is not None
+        return context
     
     def generate_response(self, prompt, context=""):
         """Generate response using Google Gemini"""
         if not self.is_available():
             raise Exception("Gemini API key not configured")
+        
+        # Build context if not provided
+        if not context:
+            context = self.build_portfolio_context()
         
         # Truncate context if too long
         context = self.truncate_context(context)
@@ -605,15 +510,12 @@ class GeminiProvider(LLMProvider):
 IMPORTANT GUIDELINES:
 - Always answer in a friendly, professional tone
 - Base your responses on the provided context data
-- If asked about something not in the context, politely redirect to available topics
 - Keep responses concise but informative
 - Use markdown formatting for better readability
 - Always refer to the person as "Guu" in third person
 
 AVAILABLE CONTEXT DATA:
 {context}
-
-Remember: You can only discuss information provided in the context above.
 
 USER QUESTION: {prompt}
 
@@ -638,30 +540,9 @@ class PortfolioChatbot:
     """Chatbot that answers questions based on portfolio data"""
     
     def __init__(self):
-        self.mode = os.getenv('CHATBOT_MODE', 'hybrid')  # local, openai, anthropic, hybrid
-        self.fallback_enabled = os.getenv('CHATBOT_FALLBACK_ENABLED', 'true').lower() == 'true'
-        
-        # Initialize LLM providers
-        self.openai_provider = OpenAIProvider()
-        self.anthropic_provider = AnthropicProvider()
+        # Initialize Gemini provider
         self.gemini_provider = GeminiProvider()
-        
-        # Determine which provider to use
-        self.llm_provider = None
-        if self.mode == 'openai' and self.openai_provider.is_available():
-            self.llm_provider = self.openai_provider
-        elif self.mode == 'anthropic' and self.anthropic_provider.is_available():
-            self.llm_provider = self.anthropic_provider
-        elif self.mode == 'gemini' and self.gemini_provider.is_available():
-            self.llm_provider = self.gemini_provider
-        elif self.mode == 'hybrid':
-            # Prefer Gemini (free), fallback to OpenAI, then Anthropic
-            if self.gemini_provider.is_available():
-                self.llm_provider = self.gemini_provider
-            elif self.openai_provider.is_available():
-                self.llm_provider = self.openai_provider
-            elif self.anthropic_provider.is_available():
-                self.llm_provider = self.anthropic_provider
+        self.fallback_enabled = True
         self.responses = {
             'greeting': [
                 "Hello! I'm Guu's portfolio assistant. I can help you learn about his projects, skills, and experience.",
@@ -797,44 +678,25 @@ class PortfolioChatbot:
         
         return context
     
-    def generate_llm_response(self, query):
-        """Generate response using LLM"""
-        if not self.llm_provider:
-            raise Exception("No LLM provider available")
-        
-        context = self.build_portfolio_context()
-        
-        try:
-            response_text = self.llm_provider.generate_response(query, context)
-            return {
-                'text': response_text,
-                'suggestions': [
-                    'Tell me more about a specific project',
-                    'What technologies does Guu use most?',
-                    'How can I contact Guu?',
-                    'What is Guu\'s experience level?'
-                ]
-            }
-        except Exception as e:
-            logging.error(f"LLM response error: {str(e)}")
-            raise e
-    
     def generate_response(self, intent, query=None):
-        """Generate response based on intent and data"""
+        """Generate response using Gemini AI with fallback to local"""
         import random
         
-        # Try LLM first if available and not in local mode
-        if self.mode != 'local' and self.llm_provider and query:
+        # Try Gemini AI first if available
+        if self.gemini_provider.is_available() and query:
             try:
-                llm_response = self.generate_llm_response(query)
-                return llm_response
+                response_text = self.gemini_provider.generate_response(query)
+                return {
+                    'text': response_text,
+                    'suggestions': [
+                        'Tell me more about a specific project',
+                        'What technologies does Guu use most?',
+                        'How can I contact Guu?',
+                        'What is Guu\'s experience level?'
+                    ]
+                }
             except Exception as e:
-                logging.warning(f"LLM failed, falling back to local: {str(e)}")
-                if not self.fallback_enabled:
-                    return {
-                        'text': 'I apologize, but I\'m having trouble processing your request right now. Please try again later.',
-                        'suggestions': ['Tell me about projects', 'What are your skills?']
-                    }
+                logging.warning(f"Gemini AI failed, falling back to local: {str(e)}")
         
         # Fallback to local responses
         if intent == 'greeting':
