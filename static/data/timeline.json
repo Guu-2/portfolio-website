@@ -1,0 +1,34 @@
+[
+    {
+        "year": 2020,
+        "title": "Started Learning AI",
+        "description": "Began my journey into AI with a focus on computer vision and NLP.",
+        "event_type": "education",
+        "icon": "fa-graduation-cap",
+        "link": ""
+    },
+    {
+        "year": 2021,
+        "title": "First AI Project",
+        "description": "Developed a real-time image processing system for object detection.",
+        "event_type": "project",
+        "icon": "fa-code",
+        "link": "https://github.com/yourusername/first-ai-project"
+    },
+    {
+        "year": 2023,
+        "title": "Joined [Your Company]",
+        "description": "Started working as an AI Engineer, focusing on speech recognition.",
+        "event_type": "work",
+        "icon": "fa-briefcase",
+        "link": ""
+    },
+    {
+        "year": 2025,
+        "title": "Launched Portfolio",
+        "description": "Created this portfolio to showcase my work and journey.",
+        "event_type": "milestone",
+        "icon": "fa-trophy",
+        "link": "https://yourportfolio.com"
+    }
+]

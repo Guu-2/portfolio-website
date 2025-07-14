@@ -1,0 +1,24 @@
+<div class="projects-container">
+    <h3 class="projects-title">My Projects</h3>
+    <div class="projects-list">
+        {% for project in projects %}
+        <div class="project-card">
+            <h4 class="project-title">{{ project.title }}</h4>
+            <p class="project-description">{{ project.description }}</p>
+            <div class="project-technologies">
+                {% for tech in project.technologies %}
+                <span class="tech-tag">{{ tech }}</span>
+                {% endfor %}
+            </div>
+            <div class="project-links">
+                {% if project.github %}
+                <a href="{{ project.github }}" target="_blank" class="project-link">GitHub</a>
+                {% endif %}
+                {% if project.demo %}
+                <a href="{{ project.demo }}" target="_blank" class="project-link">Demo</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

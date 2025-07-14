@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Nguyen Van A</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Container chia 2 phần -->
+    <div class="container">
+        <!-- Khối CMD bên trái -->
+        <div class="cmd-block">
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="circle-container">
+                        <span class="circle red"></span>
+                        <span class="circle yellow"></span>
+                        <span class="circle green"></span>
+                    </div>
+                    <span class="terminal-title">oh-my-zsh</span>
+                </div>
+                <div class="terminal-body">
+                    <p><span class="prompt">user@portfolio:~$</span> cat rish_human</p>
+                    <p id="typing-text"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Khối Giới thiệu bên phải -->
+        <div class="intro-block">
+            <!-- Header bên phải -->
+            <nav class="nav-links">
+                <a href="/" class="active">Home</a>
+                <a href="/timeline">Timeline</a>
+                <a href="/skills">Skills</a>
+                <a href="/projects">Projects</a>
+                <a href="/blog">Blog</a>
+            </nav>
+
+            <!-- Tên và icon contact -->
+            <div class="name-contact">
+                <h2>Buu Tran</h2>
+                <div class="links">
+                    <a href="https://github.com/yourusername" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/yourusername" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://twitter.com/yourusername" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://facebook.com/yourusername" target="_blank"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+
+            <!-- Nội dung thông tin cuộn -->
+            <div class="content">
+                <h3>About Me</h3>
+                <p>AI Engineer with expertise in computer vision, NLP, and speech processing.</p>
+                <p>I am passionate about leveraging AI to solve real-world problems. My work focuses on developing innovative solutions in computer vision, natural language processing, and speech recognition.</p>
+                <p>With a strong background in Python, TensorFlow, and PyTorch, I have built several projects that demonstrate my skills in these domains.</p>
+                <p>Outside of work, I enjoy exploring new technologies, reading about advancements in AI, and contributing to open-source projects.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p>More content to ensure scrolling...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nút Top-Up -->
+    <button id="top-up-btn" onclick="scrollToTop()">↑</button>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

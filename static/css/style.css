@@ -1,22 +1,609 @@
-/* custom styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-h1, h2, h3 {
-    color: #333;
-}
-ul {
-    list-style-type: none;
+    font-family: 'Source Code Pro', monospace;
+    background-color: #FFFFFF;
+    color: #000000;
+    margin: 0;
     padding: 0;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
-li {
+
+/* Navbar */
+.nav-links {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #D3D3D3;
+    /* border: 2px solid red; */
+}
+
+.nav-links a {
+    color: #000000;
+    text-decoration: none;
+    font-size: 1.2em;
+    padding: 5px 10px;
+    margin: 0px 30px;
+    border-radius: 8px;
+    /* border: 2px solid red; */
+}
+
+.nav-links a.active {
+    background-color: #FFFF99;
+    color: #000000;
+}
+
+.nav-links a:hover {
+    background-color: #D3D3D3;
+}
+/* TODO: home design */
+/* Container chia 2 phần (dùng cho trang Home)*/
+.container {
+    display: flex;
+    min-height: calc(100vh - 61px);
+}
+
+/* Khối CMD bên trái (dùng cho trang Home)*/
+.cmd-block {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 61px;
+    bottom: 0;
+    left: 0;
+
+    
+}
+
+.terminal {
+    background-color: #585454;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 2px  rgba(59, 57, 57, 0.5);
+    width: 610px;
+    max-width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    border: 1px solid #a29090;
+    width: 610px; /* Kích thước vừa phải */
+    height: 265px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.terminal-header {
+    padding: 5px 10px;
+    background-color: #585454;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-bottom: 0.5px solid #eec5c5;
+}
+
+.circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.red {
+    background-color: #FF5555;
+    left: 20px;
+}
+
+.yellow {
+    background-color: #FFBB33;
+    left: 37px;
+}
+
+.green {
+    background-color: #55FF55;
+    left: 54px;
+}
+
+.terminal-title {
+    color: #d7bfbf;
+    font-size: 0.9em;
+    width: 100%;
+    text-align: center;
+    /* border: 2px solid red; */
+
+}
+
+.terminal-body {
+    padding: 15px;
+    color: #F5F5DC;
+    font-size: 0.95em;
+    line-height: 2.0; /* Giảm khoảng cách dòng để giống terminal Linux */
+    /* border: 2px solid red; */
+    margin: 0; /* Loại bỏ margin mặc định */
+    padding: 0px 10px; /* Thêm padding để nội dung không sát viền */
+}
+
+.terminal-body p {
+    margin: 0; /* Loại bỏ margin mặc định của thẻ <p> */
+}
+
+.prompt {
+    color: #F08080;
+    /* font-weight: 600; */
+}
+
+.output-line {
+    color: #55FF55;
+    margin: 0; /* Loại bỏ margin để các dòng sát nhau */
+    white-space: pre-wrap;
+    line-height: 1.5; /* Giảm khoảng cách dòng */
+}
+
+.prompt-symbol {
+    color: #55FF55; /* Màu xanh lá cho ký tự $ */
+}
+
+.content-text {
+    color: #F5F5DC; /* Màu trắng ngà (ivory) cho phần nội dung */
+}
+
+/* Khối Giới thiệu bên phải (dùng cho trang Home)*/
+.intro-block {
+    width: 50%;
+    box-sizing: border-box;
+    margin-left: 50%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* Tên và icon contact (dùng cho trang Home)*/
+.name-contact {
+    height: calc(100vh - 61px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+}
+
+.name-contact h2 {
+    font-family: 'Roboto' , monospace;
+    text-align: left;
+    color: #534949;
+    font-size: 6em;
+    padding: 0px 10px;
+    margin: 30px 0px;
+    font-style: bold;
+}
+
+.links a {
+    color: #F08080;
+    margin: 0px 15px;
+    font-size: 1.5em;
+}
+
+.links a:hover {
+    color: #14ec00;
+}
+
+/* Nội dung thông tin cuộn (dùng cho trang Home)*/
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 10px;
+}
+
+.content h3 {
+    color: #F08080;
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+.content p {
+    font-size: 1.2em;
     margin-bottom: 20px;
 }
-a {
-    color: #007BFF;
+
+
+/* Responsive home*/
+@media (max-width: 767px) {
+    .container {
+        flex-direction: column;
+        min-height: calc(100vh - 81px);
+    }
+
+    .cmd-block {
+        display: none;
+    }
+
+    .intro-block {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .terminal {
+        max-width: 100%;
+    }
+
+    .name-contact {
+        text-align: center;
+        margin: 0;
+        padding: 20px;
+        height: auto;
+    }
+
+    .name-contact h2 {
+        text-align: center;
+        font-size: 2em;
+    }
+
+    .nav-links {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        margin: 5px;
+    }
+
+    .content {
+        padding: 10px 25px;
+        overflow-y: visible;
+    }
+
+
+}
+
+/* TODO: trang timeline */
+/* Thiết kế mới cho trang Timeline */
+.timeline-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.timeline-title {
+    text-align: center;
+    color: #F08080;
+    font-size: 2em;
+    margin-bottom: 40px;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 40px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #D3D3D3;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.timeline-date {
+    width: 60px;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #F08080;
+    position: relative;
+}
+
+.timeline-date::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: #F08080;
+    border-radius: 50%;
+    border: 2px solid #FFFFFF;
+    z-index: 1;
+}
+
+.timeline-content {
+    flex: 1;
+    padding-left: 20px;
+}
+
+.timeline-content h4 {
+    font-size: 1.3em;
+    color: #000000;
+    margin-bottom: 5px;
+}
+
+.timeline-content p {
+    font-size: 1.1em;
+    color: #555555;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .timeline-container {
+        padding: 20px 10px;
+    }
+
+    .timeline {
+        padding-left: 30px;
+    }
+
+    .timeline::before {
+        left: 15px;
+    }
+
+    .timeline-date {
+        width: 50px;
+        font-size: 1em;
+    }
+
+    .timeline-content {
+        padding-left: 15px;
+    }
+
+    .timeline-content h4 {
+        font-size: 1.2em;
+    }
+
+    .timeline-content p {
+        font-size: 1em;
+    }
+}
+
+/*TODO: Các kiểu cho trang Skills */
+
+/* Thiết kế mới cho trang Skills */
+.skills-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.skills-title {
+    text-align: center;
+    color: #F08080;
+    font-size: 2em;
+    margin-bottom: 40px;
+}
+
+.skills-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.skills-category {
+    background-color: #F9F9F9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.skills-category h4 {
+    color: #F08080;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #D3D3D3;
+    padding-bottom: 5px;
+}
+
+.skill-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.skill-name {
+    width: 200px;
+    font-size: 1.1em;
+    color: #000000;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 10px;
+    background-color: #F5F5F5;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.progress {
+    height: 100%;
+    background-color: #F08080;
+    transition: width 1s ease-in-out;
+}
+
+.proficiency {
+    width: 40px;
+    font-size: 1em;
+    color: #555555;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .skills-container {
+        padding: 20px 10px;
+    }
+
+    .skills-wrapper {
+        gap: 20px;
+    }
+
+    .skills-category {
+        padding: 15px;
+    }
+
+    .skills-category h4 {
+        font-size: 1.3em;
+    }
+
+    .skill-name {
+        width: 150px;
+        font-size: 1em;
+    }
+
+    .progress-bar {
+        margin-right: 10px;
+    }
+
+    .proficiency {
+        width: 30px;
+        font-size: 0.9em;
+    }
+}
+
+
+/* TODO: trang projects */
+
+
+/* Thiết kế cho trang Projects */
+.projects-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.projects-title {
+    text-align: center;
+    color: #F08080;
+    font-size: 2em;
+    margin-bottom: 40px;
+}
+
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.project-card {
+    background-color: #F9F9F9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.project-title {
+    font-size: 1.5em;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.project-description {
+    font-size: 1.1em;
+    color: #555555;
+    margin-bottom: 15px;
+}
+
+.project-technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.tech-tag {
+    background-color: #F08080;
+    color: #FFFFFF;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.9em;
+}
+
+.project-links {
+    display: flex;
+    gap: 15px;
+}
+
+.project-link {
+    color: #F08080;
     text-decoration: none;
+    font-size: 1em;
+    font-weight: 500;
 }
-a:hover {
+
+.project-link:hover {
     text-decoration: underline;
+    color: #14ec00;
 }
+
+/* Responsive */
+@media (max-width: 767px) {
+    .projects-container {
+        padding: 20px 10px;
+    }
+
+    .projects-list {
+        gap: 15px;
+    }
+
+    .project-card {
+        padding: 15px;
+    }
+
+    .project-title {
+        font-size: 1.3em;
+    }
+
+    .project-description {
+        font-size: 1em;
+    }
+
+    .tech-tag {
+        font-size: 0.8em;
+        padding: 4px 8px;
+    }
+
+    .project-link {
+        font-size: 0.9em;
+    }
+}
+
+/*TODO: Nút Top-Up */
+#top-up-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #F08080;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+}
+
+#top-up-btn:hover {
+    background: linear-gradient(to right, #F08080, #ffc0cb);
+}
+
+/* TODO:  CV */
+

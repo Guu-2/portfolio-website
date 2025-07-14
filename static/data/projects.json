@@ -1,0 +1,23 @@
+[
+    {
+        "title": "Image Classification App",
+        "description": "Ứng dụng phân loại hình ảnh sử dụng CNN.",
+        "technologies": ["Python", "TensorFlow", "OpenCV"],
+        "github": "",
+        "demo": ""
+    },
+    {
+        "title": "Text Sentiment Analysis",
+        "description": "Phân tích cảm xúc văn bản với BERT.",
+        "technologies": ["Python", "PyTorch", "Transformers"],
+        "github": "",
+        "demo": ""
+    },
+    {
+        "title": "Speech Recognition Demo",
+        "description": "Nhận diện giọng nói với mô hình deep learning.",
+        "technologies": ["Python", "TensorFlow", "Librosa"],
+        "github": "",
+        "demo": ""
+    }
+]

@@ -1,0 +1,46 @@
+{
+    "skills": [
+        {
+            "category": "Programming Languages",
+            "items": [
+                {"name": "Python", "proficiency": 5},
+                {"name": "Java", "proficiency": 4}
+            ]
+        },
+        {
+            "category": "Data Engineering",
+            "items": [
+                {"name": "PySpark", "proficiency": 4},
+                {"name": "Hadoop", "proficiency": 3},
+                {"name": "MySQL", "proficiency": 4},
+                {"name": "MongoDB", "proficiency": 3}
+            ]
+        },
+        {
+            "category": "AI/ML Frameworks & Libraries",
+            "items": [
+                {"name": "PyTorch", "proficiency": 5},
+                {"name": "TensorFlow", "proficiency": 4},
+                {"name": "Sci-kit Learn", "proficiency": 4},
+                {"name": "OpenCV", "proficiency": 3},
+                {"name": "Hugging Face Transformers", "proficiency": 4}
+            ]
+        },
+        {
+            "category": "Platform & Environment",
+            "items": [
+                {"name": "Kaggle", "proficiency": 4},
+                {"name": "Hugging Face Hub", "proficiency": 4},
+                {"name": "AWS (EC2, S3)", "proficiency": 3}
+            ]
+        },
+        {
+            "category": "Tools",
+            "items": [
+                {"name": "Git", "proficiency": 5},
+                {"name": "GitHub", "proficiency": 5},
+                {"name": "GitLab", "proficiency": 4}
+            ]
+        }
+    ]
+}

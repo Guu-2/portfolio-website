@@ -1,0 +1,14 @@
+<div class="timeline-container">
+    <h3 class="timeline-title">My Journey</h3>
+    <div class="timeline">
+        {% for event in timeline %}
+        <div class="timeline-item">
+            <div class="timeline-date">{{ event.year }}</div>
+            <div class="timeline-content">
+                <h4>{{ event.title }}</h4>
+                <p>{{ event.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

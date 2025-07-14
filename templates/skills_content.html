@@ -1,0 +1,19 @@
+<div class="skills-container">
+    <h3 class="skills-title">My Skills</h3>
+    <div class="skills-wrapper">
+        {% for category in skills %}
+        <div class="skills-category">
+            <h4>{{ category.category }}</h4>
+            {% for item in category['items'] %}
+            <div class="skill-item">
+                <span class="skill-name">{{ item.name }}</span>
+                <div class="progress-bar">
+                    <div class="progress" style="width: {{ (item.proficiency * 20) }}%;"></div>
+                </div>
+                <span class="proficiency">{{ item.proficiency }}/5</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
